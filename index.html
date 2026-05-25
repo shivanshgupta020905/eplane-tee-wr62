@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>E-Plane Tee — WR-62 | Shivansh Gupta</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #04080f;
+      --surface: #0a1020;
+      --border: #1a2a44;
+      --accent: #00d4ff;
+      --accent2: #ff6b35;
+      --text: #c8d8f0;
+      --muted: #5a7a9a;
+      --green: #00ff9d;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 1; }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 3rem 0 2.5rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tag::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      font-family: var(--mono);
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: 11px;
+      padding: 3px 10px;
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      color: var(--muted);
+      background: var(--surface);
+    }
+
+    .badge.accent { border-color: var(--accent); color: var(--accent); }
+    .badge.orange { border-color: var(--accent2); color: var(--accent2); }
+    .badge.green { border-color: var(--green); color: var(--green); }
+
+    /* Sections */
+    section { padding: 3rem 0; border-bottom: 1px solid var(--border); }
+
+    h2 {
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    h2::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    p { color: var(--text); margin-bottom: 1rem; }
+
+    /* Results grid */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .result-card {
+      background: var(--surface);
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .result-value {
+      font-family: var(--mono);
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--accent);
+      display: block;
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .result-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    /* Phase diagram */
+    .phase-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2rem;
+      margin: 1.5rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .waveguide-diagram {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--mono);
+      font-size: 13px;
+      margin: 1.5rem 0;
+    }
+
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 600;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    td {
+      padding: 0.65rem 1rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    tr:hover td { background: rgba(0,212,255,0.03); }
+
+    .highlight { color: var(--green); font-weight: 600; }
+
+    /* Code block */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 1.25rem 1.5rem;
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text);
+      overflow-x: auto;
+      margin: 1rem 0;
+      line-height: 1.6;
+    }
+
+    .code-block .comment { color: var(--muted); }
+    .code-block .val { color: var(--accent); }
+    .code-block .eq { color: var(--accent2); }
+
+    /* Phase explanation */
+    .phase-box {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 1rem;
+      align-items: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .port-box {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .port-name {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .arrow-up, .arrow-down {
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+
+    .arrow-up { color: var(--accent); }
+    .arrow-down { color: var(--accent2); }
+
+    .port-label {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 0.4rem;
+    }
+
+    .divider-symbol {
+      font-family: var(--mono);
+      font-size: 2rem;
+      color: var(--border);
+    }
+
+    /* Key points */
+    .key-points { list-style: none; margin: 1rem 0; }
+    .key-points li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      padding-left: 1.5rem;
+      position: relative;
+      font-size: 14px;
+    }
+
+    .key-points li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-family: var(--mono);
+      font-weight: 600;
+    }
+
+    /* Footer */
+    footer {
+      padding: 2.5rem 0;
+      text-align: center;
+    }
+
+    .author-block {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .author-name {
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .author-meta {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .repo-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--accent);
+      padding: 6px 18px;
+      letter-spacing: 0.1em;
+      transition: all 0.2s;
+    }
+
+    .repo-link:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* Scanline animation */
+    @keyframes scanline {
+      0% { transform: translateY(-100%); }
+      100% { transform: translateY(100vh); }
+    }
+
+    .scanline {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(transparent, rgba(0,212,255,0.05), transparent);
+      animation: scanline 8s linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    header, section { animation: fadeUp 0.6s ease both; }
+    section:nth-child(2) { animation-delay: 0.1s; }
+    section:nth-child(3) { animation-delay: 0.2s; }
+    section:nth-child(4) { animation-delay: 0.3s; }
+  </style>
+</head>
+<body>
+
+<div class="scanline"></div>
+
+<div class="container">
+
+  <header>
+    <div class="tag">Microwave Engineering · LNMIIT Jaipur · 2026</div>
+    <h1>E-Plane Tee Junction<br><span>WR-62 Waveguide — HFSS Simulation</span></h1>
+    <p class="subtitle">Roll No. 24UEC228 · Shivansh Gupta · Project No. 28</p>
+    <div class="badges">
+      <span class="badge accent">Ansys HFSS 2025 R2</span>
+      <span class="badge orange">Ku-Band · 12–18 GHz</span>
+      <span class="badge green">TE₁₀ Mode</span>
+      <span class="badge">WR-62 · a = 15.8 mm</span>
+      <span class="badge">Air-Filled</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Overview</h2>
+    <p>
+      An air-filled E-Plane Tee junction was designed and simulated for the WR-62 rectangular waveguide
+      using Ansys HFSS. The junction is a three-port waveguide component where the auxiliary arm lies
+      in the plane of the dominant TE₁₀ electric field. This project demonstrates its behaviour as an
+      equal power divider and verifies the characteristic 180° phase opposition between output ports.
+    </p>
+
+    <div class="results-grid">
+      <div class="result-card">
+        <span class="result-value">−4.46</span>
+        <span class="result-label">dB · S₁₃ = S₂₃ at 15 GHz</span>
+      </div>
+      <div class="result-card">
+        <span class="result-value">180°</span>
+        <span class="result-label">Phase difference · Port 1 vs Port 2</span>
+      </div>
+      <div class="result-card">
+        <span class="result-value">9.49</span>
+        <span class="result-label">GHz · Cutoff frequency (TE₁₀)</span>
+      </div>
+      <div class="result-card">
+        <span class="result-value">15</span>
+        <span class="result-label">GHz · Operating frequency</span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Waveguide Specifications</h2>
+
+    <div class="code-block">
+<span class="comment">// WR-62 Dimensions & Parameters</span>
+<span class="val">a</span>  = <span class="eq">15.8 mm</span>   <span class="comment">// broad wall width</span>
+<span class="val">b</span>  = <span class="eq">7.9 mm</span>    <span class="comment">// narrow wall height (b = a/2)</span>
+<span class="val">fc</span> = c / (2a) = 3×10⁸ / (2 × 0.0158) = <span class="eq">9.49 GHz</span>
+<span class="val">f₀</span> = <span class="eq">15 GHz</span>   <span class="comment">// operating frequency (Ku-band)</span>
+<span class="val">ε</span>  = <span class="eq">1.0</span>      <span class="comment">// air-filled (lossless medium)</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr><th>Parameter</th><th>Value</th><th>Note</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Waveguide standard</td><td>WR-62</td><td>IEEE standard</td></tr>
+        <tr><td>Broad wall width (a)</td><td>15.8 mm</td><td>—</td></tr>
+        <tr><td>Narrow wall height (b)</td><td>7.9 mm</td><td>b = a/2</td></tr>
+        <tr><td>Fill medium</td><td>Air</td><td>εᵣ = μᵣ = 1</td></tr>
+        <tr><td>Dominant mode</td><td>TE₁₀</td><td>Lowest cutoff</td></tr>
+        <tr><td class="highlight">Cutoff frequency</td><td class="highlight">9.49 GHz</td><td>Theory = simulation</td></tr>
+        <tr><td>Operating frequency</td><td>15 GHz</td><td>Mid Ku-band</td></tr>
+        <tr><td>Boundaries</td><td>PEC</td><td>Perfect conductor walls</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Why 180° Phase Difference?</h2>
+
+    <p>
+      When a signal enters Port 3 (E-arm), it splits at the T-junction into two waves
+      travelling in opposite directions along the main guide. The transverse E-field (Eᵧ)
+      must satisfy boundary conditions at the junction — this forces the field to reverse
+      direction for one of the output arms, producing a 180° phase opposition.
+    </p>
+
+    <div class="phase-box">
+      <div class="port-box">
+        <div class="port-name">PORT 1  (−Z)</div>
+        <div class="arrow-up">↑</div>
+        <div class="port-label">Eᵧ points +Y</div>
+      </div>
+      <div class="divider-symbol">|</div>
+      <div class="port-box">
+        <div class="port-name">PORT 2  (+Z)</div>
+        <div class="arrow-down">↓</div>
+        <div class="port-label">Eᵧ points −Y</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color: var(--muted); font-family: var(--mono);">
+      ↑ Snapshot at 15 GHz, phase = 60°. Both ports carry equal power but with
+      opposite E-field orientations — a 180° phase difference confirmed by vector field plots.
+    </p>
+
+    <ul class="key-points">
+      <li>E-field vectors at Port 1 point <strong>upward (+Y)</strong></li>
+      <li>E-field vectors at Port 2 point <strong>downward (−Y)</strong> simultaneously</li>
+      <li>This is the geometric antisymmetry of the E-plane junction</li>
+      <li>H-plane Tee outputs are <em>in-phase</em> — the key distinguishing property</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Simulation Results</h2>
+
+    <table>
+      <thead>
+        <tr><th>Figure</th><th>Plot Type</th><th>Key Observation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Fig. 1</td><td>HFSS 3D Model</td><td>WR-62 E-plane Tee geometry with 3 wave ports</td></tr>
+        <tr><td>Fig. 2</td><td>S₁₃ & S₂₃ magnitude vs f</td><td class="highlight">−4.46 dB at 15 GHz, curves overlap → equal power division</td></tr>
+        <tr><td>Fig. 3</td><td>Polar plot S₁₃ & S₂₃</td><td>Mirror-image traces → 180° phase opposition</td></tr>
+        <tr><td>Fig. 4</td><td>∠S₁₃ − ∠S₂₃ vs f</td><td class="highlight">±180° across entire Ku-band</td></tr>
+        <tr><td>Fig. 5</td><td>Mag_E (YZ plane)</td><td>Equal E-field amplitude at Port 1 & 2</td></tr>
+        <tr><td>Fig. 6</td><td>Mag_E (XZ plane)</td><td>Sinusoidal variation → confirms TE₁₀ mode; standing waves visible</td></tr>
+        <tr><td>Fig. 7</td><td>Vector_E (YZ plane)</td><td class="highlight">Direct visual: opposite arrows at Port 1 (+Y) and Port 2 (−Y)</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:13px; color: var(--muted);">
+      Note: The −4.46 dB result (vs ideal −3 dB) reflects ~1.46 dB excess insertion loss due to impedance mismatch
+      at the unmatched T-junction — an inherent property of the basic E-plane Tee without matching networks.
+    </p>
+  </section>
+
+  <section>
+    <h2>Technical Stack</h2>
+
+    <table>
+      <thead>
+        <tr><th>Tool / Standard</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Ansys HFSS 2025 R2</td><td>Full-wave 3D EM simulation (FEM solver)</td></tr>
+        <tr><td>Modal Network solution</td><td>S-parameter and field extraction</td></tr>
+        <tr><td>WR-62 (IEEE 521)</td><td>Waveguide standard</td></tr>
+        <tr><td>Wave Port excitation</td><td>TE₁₀ mode launch at all three ports</td></tr>
+        <tr><td>PEC boundaries</td><td>Perfect conductor wall simulation</td></tr>
+        <tr><td>Adaptive mesh + Fast sweep</td><td>7.5–22.5 GHz, 50 MHz steps</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <div class="author-block">
+      <span class="author-name">Shivansh Gupta</span>
+      <span class="author-meta">Roll No. 24UEC228 · B.Tech ECE · LNMIIT Jaipur</span>
+      <span class="author-meta">Microwave Engineering Theory · Project No. 28 · May 2026</span>
+      <a class="repo-link" href="https://github.com/ShivanshGupta/eplane-tee-wr62" target="_blank">
+        ↗ View on GitHub
+      </a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
