@@ -3,11 +3,6 @@
 > **Microwave Engineering Project** | Department of Electronics & Communication Engineering  
 > The LNM Institute of Information Technology, Jaipur
 
-[![HFSS](https://img.shields.io/badge/Simulation-Ansys%20HFSS%202025%20R2-blue?style=flat-square)](https://www.ansys.com/products/electronics/ansys-hfss)
-[![Frequency Band](https://img.shields.io/badge/Band-Ku%20Band%20(12–18%20GHz)-green?style=flat-square)]()
-[![Waveguide](https://img.shields.io/badge/Waveguide-WR--62-orange?style=flat-square)]()
-[![License](https://img.shields.io/badge/License-Academic-lightgrey?style=flat-square)]()
-
 ---
 
 ## Overview
